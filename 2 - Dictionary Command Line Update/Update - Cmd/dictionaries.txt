@@ -1,0 +1,100 @@
+a	mot
+about	trong khoang
+all	tat ca cac
+also	cung the
+and	va
+as	nhu
+at	tai
+be	duoc
+because	boi vi
+but	nhung
+by	boi
+can	co the
+come	den
+could	co the
+day	ngay
+do	lam
+even	cung
+find	tim thay
+first	Dau tien
+for	cho
+from	tu
+get	duoc
+give	dua cho
+go	di
+have	co
+he	anh ay
+her	co ay
+here	day
+him	anh ta
+his	cua anh ay
+how	lam sao
+I	toi
+if	neu
+in	trong
+into	vao
+it	no
+its	no la
+just	chi
+know	biet
+like	nhu
+look	nhin
+make	che tao
+man	Dan ong
+many	nhieu
+me	toi
+more	hon
+my	cua toi
+new	Moi
+no	Khong
+not	khong phai
+now	hien nay
+of	cua
+on	tren
+one	mot
+only	chi co
+or	hoac la
+other	khac
+our	cua chung toi
+out	ngoai
+people	nhung nguoi
+say	Noi
+see	xem
+she	ba ay
+so	vi the
+some	mot so
+take	lay
+tell	noi
+than	hon
+that	cai do
+the	cac
+their	cua chung
+them	ho
+then	sau do
+there	o do
+these	nhung cai nay
+they	ho
+thing	Dieu
+think	suy nghi
+this	dieu nay
+those	nhung cai do
+time	thoi gian
+to	den
+two	hai
+up	len
+use	su dung
+very	rat
+want	muon
+way	duong
+we	chung toi
+well	tot
+what	gi
+when	khi nao
+which	cai nao
+who	nguoi nao
+will	se
+with	voi
+would	se
+year	nam
+you	ban
+your	cua ban

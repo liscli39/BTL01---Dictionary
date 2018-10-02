@@ -36,7 +36,7 @@ public class Dictionary {
             return null;
         }
     }
-    //
+    //Edit one word with index
     public Boolean Edit(int index, Word word){
         try{
             dictionary.set(index, word);
@@ -45,6 +45,7 @@ public class Dictionary {
             return false;
         }
     }
+    //Delete one word with index
     public Boolean Delete(int index){
         try{
             dictionary.remove(index);

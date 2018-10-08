@@ -24,17 +24,17 @@ public class DictionaryCommandline {
     }
     private void showAllWords(){
         List<Word> words =  management.getDictionary().getAllWords();
-        //
+        //Print titles in order are No,English,Vietnamese
         int i = 1;
         System.out.println("--------------------------------------");
         System.out.printf("%3s %-20s %s\n","No","| English","| Vietnamese");
         System.out.println("--------------------------------------");
-        //
+        //Print No, Word_target and Word_explain
         for (Word var : words) {
             System.out.printf("%3d %-20s %s\n", i, "| "+var.getTarget(),"| " + var.getExplain());
             i++;
         }
-        //
+        //Print the separator
         System.out.println("--------------------------------------");
     }
     private void dictionaryAdvanced(){

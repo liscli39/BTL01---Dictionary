@@ -11,6 +11,8 @@ import project.Entity.Word;
 import project.management.DictionaryManagement;
 import project.management.SQLiteJDBCDriverConnection;
 import javax.swing.event.DocumentListener;
+import java.util.*;
+import javax.swing.JTextField;
 /**
  *
  * @author Liscli
@@ -23,7 +25,9 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        
+        management  = new DictionaryManagement();    
+        model = new DefaultListModel();
+        currentList = new LinkedList<>();
         //
         fillList();
         //
@@ -50,14 +54,15 @@ public class MainForm extends javax.swing.JFrame {
         deffinitionTextPanel = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         searchPanel.setBackground(new java.awt.Color(204, 204, 204));
 
         searchTextField.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         searchTextField.setText("Search . . .");
-        searchTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                searchTextFieldMouseClicked(evt);
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
             }
         });
 
@@ -67,6 +72,7 @@ public class MainForm extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        vocabuList.setFixedCellWidth(0);
         vocabuList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 vocabuListMouseClicked(evt);
@@ -80,18 +86,18 @@ public class MainForm extends javax.swing.JFrame {
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         searchPanelLayout.setVerticalGroup(
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
-                .addGap(72, 72, 72)
+                .addContainerGap()
                 .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -112,6 +118,8 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        getContentPane().add(searchPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 480));
+
         deffinitionPanel.setBackground(new java.awt.Color(153, 153, 153));
 
         wordField.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -126,8 +134,9 @@ public class MainForm extends javax.swing.JFrame {
 
         setButton.setText("jButton2");
 
-        deffinitionTextPanel.setContentType("text/css"); // NOI18N
+        deffinitionTextPanel.setContentType("text/html"); // NOI18N
         jScrollPane3.setViewportView(deffinitionTextPanel);
+        deffinitionTextPanel.setEditable(false);
 
         javax.swing.GroupLayout deffinitionPanelLayout = new javax.swing.GroupLayout(deffinitionPanel);
         deffinitionPanel.setLayout(deffinitionPanelLayout);
@@ -138,7 +147,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(deffinitionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(deffinitionPanelLayout.createSequentialGroup()
-                        .addComponent(wordField, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                        .addComponent(wordField, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(soundButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -154,26 +163,13 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(soundButton)
                     .addComponent(setButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         wordField.setEditable(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deffinitionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(deffinitionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(deffinitionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 1, 480, 480));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -187,15 +183,14 @@ public class MainForm extends javax.swing.JFrame {
     private void vocabuListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vocabuListMouseClicked
         // TODO add your handling code here:
         int id = vocabuList.getSelectedIndex();
-//        Word w = management.getDictionary().getAllWords();
-//        wordField.setText(w.getTarget());
-//        deffinitionTextPanel.setText(w.getExplain());
+        Word w = currentList.get(id);
+        wordField.setText(w.getTarget());
+        deffinitionTextPanel.setText(w.getExplain());
     }//GEN-LAST:event_vocabuListMouseClicked
 
-    private void searchTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchTextFieldMouseClicked
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
         // TODO add your handling code here:
-        searchTextField.setText("");
-    }//GEN-LAST:event_searchTextFieldMouseClicked
+    }//GEN-LAST:event_searchTextFieldActionPerformed
     private boolean compare(String search,String var){
         if(search.length() > var.length()) return false; 
         for(int i=0;i<Math.min(search.length(), var.length());i++){
@@ -204,8 +199,6 @@ public class MainForm extends javax.swing.JFrame {
         return true;
     }
     //
-    DictionaryManagement management  = new DictionaryManagement();    
-    DefaultListModel model = new DefaultListModel();
     private void fillList(){
         model.clear();
         vocabuList.setModel(model);
@@ -213,19 +206,22 @@ public class MainForm extends javax.swing.JFrame {
         int id = 0;
         for(Word var : management.getDictionary().getAllWords()){
             model.add(id++,var.getTarget());
+            currentList.add(var);  
         }
     }
     private void search(){
         //vocabuList.setModel(model);
         model.clear();
+        currentList.clear();
         String s = searchTextField.getText();
         int id = 0;
         for(Word var : management.getDictionary().getAllWords()){
-            if(compare(s,var.getTarget()))
+            if(compare(s,var.getTarget())){
             model.add(id++,var.getTarget());
+            currentList.add(var);
+            }
         }
     }
-    
     /**
      * @param args the command line arguments
      */
@@ -237,11 +233,12 @@ public class MainForm extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
+            
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -252,7 +249,7 @@ public class MainForm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+//SwingUtilities.updateComponentTreeUI(frame);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -273,5 +270,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JList<String> vocabuList;
     private javax.swing.JTextField wordField;
     // End of variables declaration//GEN-END:variables
-    
+    private DictionaryManagement management;    
+    private DefaultListModel model;
+    private List<Word> currentList;
 }

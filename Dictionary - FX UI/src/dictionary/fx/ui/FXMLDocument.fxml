@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="449.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionary.fx.ui.FXMLDocumentController">
+   <children>
+      <AnchorPane fx:id="top" prefHeight="52.0" prefWidth="466.0" style="-fx-background-color: #e74c3c;">
+         <children>
+            <TextField fx:id="searchBox" layoutX="50.0" layoutY="11.0" prefHeight="28.0" prefWidth="256.0" promptText="Search . . .">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+               <contextMenu>
+                  <ContextMenu fx:id="contextMenu" autoHide="false">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Some thing" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </TextField>
+            <ImageView fx:id="exitButton" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/exit.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="addButton" fitHeight="25.0" fitWidth="25.0" layoutX="426.0" layoutY="15.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/add.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="defffinition" layoutY="64.0" prefHeight="385.0" prefWidth="466.0" style="-fx-background-color: #e74c3c;">
+         <children>
+            <TextArea fx:id="textArea" layoutX="13.0" layoutY="44.0" prefHeight="329.0" prefWidth="441.0">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TextArea>
+            <ImageView fx:id="speakButton" fitHeight="25.0" fitWidth="25.0" layoutX="19.0" layoutY="8.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/speak.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="editButton" fitHeight="25.0" fitWidth="25.0" layoutX="385.0" layoutY="8.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/edit.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="deleteButton" fitHeight="25.0" fitWidth="25.0" layoutX="424.0" layoutY="6.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/delete.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

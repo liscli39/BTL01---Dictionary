@@ -20,7 +20,7 @@ public class DictionaryManagement {
     //insert word(s) into dictionary from COMMANDLINE
     public void insertFromCommandline(){
         dictionary = new Dictionary();
-        Scanner scanner = new Scanner(System.in); 
+        Scanner scanner = new Scanner(System.in); //Create a Scanner object
         int numWors = scanner.nextInt();
         scanner.nextLine(); 
         //

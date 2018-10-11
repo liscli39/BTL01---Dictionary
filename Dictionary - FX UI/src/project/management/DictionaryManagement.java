@@ -21,7 +21,6 @@ public class DictionaryManagement {
  //      this.getListWordsWithQuery("select word,detail from tbl_edict");
     }
     public void insertFromDatabase(){
-        
         dictionary = new Dictionary();
         sql = new SQLiteJDBCDriverConnection();
         dictionary.setListWords(sql.getResult(sql.Connect()));
@@ -34,13 +33,17 @@ public class DictionaryManagement {
     }
     
     public void Add(Word w){
-        
+        dictionary.Add(w);
+        sql.insertIntoDatabase(sql.Connect(), w);
+        sql.Connect();
     }
     public void Edit(Word w){
-        
+        sql.updateInDatabase(sql.Connect(),w);
+        sql.CloseConnection();
     }
     public void Delete(int idx){
-        
+        sql.deleteFromDatabase(sql.Connect(), idx);
+        sql.CloseConnection();
     }
     
     public Dictionary getDictionary(){

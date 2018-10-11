@@ -20,10 +20,12 @@ import javafx.scene.input.MouseEvent;
 public class DictionaryFXUI extends Application {
     private double xOffset = 0;
     private double yOffset = 0;
+    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         stage.initStyle(StageStyle.TRANSPARENT);
+        
         root.setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event){
@@ -37,9 +39,10 @@ public class DictionaryFXUI extends Application {
                 stage.setX(event.getScreenX() - xOffset);
                 stage.setY(event.getScreenY() - yOffset);            }
         });
-            
+        
         Scene scene = new Scene(root);
         scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        
         stage.setScene(scene);
         stage.show();
     }

@@ -14,7 +14,8 @@ import java.io.*;
 public class DictionaryManagement {
     DictionaryManagement(){
         File directory = new File("");
-        fileName = directory.getAbsolutePath() + "\\dictionaries.txt";
+        fileName = "dictionaries.txt";
+        
     }
     //insert word(s) into dictionary from COMMANDLINE
     public void insertFromCommandline(){
@@ -54,8 +55,9 @@ public class DictionaryManagement {
         }
     }
     //
-    public void dictionaryExportToFile(){
+    public void dictionaryExportToFile(String fileName){
         try{
+            System.out.println(fileName);
             FileWriter writer = new FileWriter(fileName);
             BufferedWriter buffer = new BufferedWriter(writer);
             //
@@ -64,6 +66,7 @@ public class DictionaryManagement {
                 buffer.newLine();
             }
             buffer.close();
+            System.out.println("Export success!");
         }catch (FileNotFoundException ex) {
             //
             System.out.println("Unable to open file '" + fileName + "'");          
@@ -85,17 +88,14 @@ public class DictionaryManagement {
             //
             if(var.getTarget().equals(target)){
                 System.out.println(var.getExplain()); 
-                System.out.println("- Select (1)'Add New' (2)'Edit' (3)'Delete' (4)'Exit': ");
+                System.out.print("- Select (1)'Edit' (2)'Delete' else to 'Exit': ");
                 try{
                     int c = scanner.nextInt();
                     switch(c){
                         case 1:
-                            this.dictionaryAddWord();
-                            break;
-                        case 2:
                             this.dictionaryEditWord(index);
                             break;
-                        case 3:
+                        case 2:
                             this.dictionaryDelWord(index);
                             break;
                         default:
@@ -105,16 +105,14 @@ public class DictionaryManagement {
                     System.out.print("Untype 'int' !!");    
                 }
                 //
-                scanner.close();
                 return;
             }
         }
         //
         System.out.println("-> Error!! Not found this word!!");
-        scanner.close();
     }
     //
-    private void dictionaryAddWord(){
+    public void dictionaryAddWord(){
         System.out.println("- Add a new Word");
         //
         Scanner scanner = new Scanner(System.in);
@@ -127,8 +125,7 @@ public class DictionaryManagement {
         dictionary.Add(newWord);
         //Add to file
         this.setFileName("dictionaries.txt");
-        this.dictionaryExportToFile();
-        scanner.close();
+        this.dictionaryExportToFile(this.fileName);
         //
         System.out.println("Success!");
     }
@@ -143,12 +140,12 @@ public class DictionaryManagement {
         System.out.println("*explain: ");
         word.setExplain(scanner.nextLine());
         //
-        System.out.println("- Select (1)'Save' (2)'Exit':");
+        System.out.print("- Select (1)'Save' (2)'Exit':");
         try{
             int c = scanner.nextInt();
             if(c==1){
                 dictionary.Edit(index - 1, word);
-                this.dictionaryExportToFile();
+                this.dictionaryExportToFile(this.fileName);
                 System.out.println("Success!");
             }else{
                 return;
@@ -157,18 +154,16 @@ public class DictionaryManagement {
             return;    
         }
         //
-        scanner.close();
     }
     //
     private void dictionaryDelWord(int index){
-        System.out.println("- Delete this word? \n (1)'OK' (2)'Cancel':");
+        System.out.print("- Delete this word? \n (1)'OK' (2)'Cancel':");
         try{
             Scanner scanner = new Scanner(System.in);
             int c = scanner.nextInt();
-            scanner.close();
             if(c==1){
                 dictionary.Delete(index - 1);
-                this.dictionaryExportToFile();
+                this.dictionaryExportToFile(this.fileName);
                 System.out.println("Success!");
             }else{
                 return;

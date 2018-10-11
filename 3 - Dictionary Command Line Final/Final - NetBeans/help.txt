@@ -1,0 +1,6 @@
+.show	Show all words in the dictionary
+.search	Search chars and return a list words which begin by chars
+.lookup Return explain of this word
+.add	Insert a new word into dictionary
+.help	Show hints
+.exit	Turn off the dictionary

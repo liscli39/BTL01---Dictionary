@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -9,11 +10,26 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="449.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionary.fx.ui.FXMLDocumentController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="467.0" prefWidth="466.0" style="-fx-background-color: transparenttransparent;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionary.fx.ui.FXMLDocumentController">
    <children>
-      <AnchorPane fx:id="top" prefHeight="52.0" prefWidth="466.0" style="-fx-background-color: #e74c3c;">
+      <AnchorPane fx:id="top" focusTraversable="true" onMouseClicked="#handleButtonAction" prefHeight="52.0" prefWidth="467.0" style="-fx-background-color: #e74c3c;">
          <children>
-            <TextField fx:id="searchBox" layoutX="50.0" layoutY="11.0" prefHeight="28.0" prefWidth="256.0" promptText="Search . . .">
+            <ImageView fx:id="exitButton" fitHeight="25.0" fitWidth="25.0" focusTraversable="true" layoutX="14.0" layoutY="14.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/shutdown.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="addButton" fitHeight="25.0" fitWidth="25.0" layoutX="426.0" layoutY="15.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/add.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="editButton" fitHeight="25.0" fitWidth="25.0" layoutX="384.0" layoutY="13.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/edit.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="searchBox" layoutX="52.0" layoutY="12.0" onMouseClicked="#handleButtonAction" prefHeight="28.0" prefWidth="308.0" promptText="Search . . .">
                <font>
                   <Font name="Century Gothic" size="14.0" />
                </font>
@@ -25,43 +41,76 @@
                   </ContextMenu>
                </contextMenu>
             </TextField>
-            <ImageView fx:id="exitButton" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+            <Label fx:id="idLabel" disable="true" layoutX="298.0" layoutY="17.0" text="id" visible="false" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="definition" focusTraversable="true" layoutY="62.0" prefHeight="405.0" prefWidth="466.0" style="-fx-background-color: #e74c3c;" visible="false">
+         <children>
+            <AnchorPane fx:id="editPane" prefHeight="400.0" prefWidth="467.0" style="-fx-background-color: #77B1FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <TextField fx:id="textField_" layoutX="14.0" layoutY="11.0" prefHeight="25.0" prefWidth="441.0" promptText="New Target . . ." />
+                  <TextArea fx:id="textArea_" layoutX="14.0" layoutY="42.0" prefHeight="310.0" prefWidth="441.0" promptText="New Explains . . ." wrapText="true" />
+                  <ImageView fx:id="cancelButton" fitHeight="25.0" fitWidth="25.0" layoutX="421.0" layoutY="364.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/exit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="saveButton" fitHeight="25.0" fitWidth="59.0" layoutX="373.0" layoutY="364.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/ok.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="explain" onMouseClicked="#handleButtonAction" prefHeight="405.0" prefWidth="467.0" style="-fx-background-color: #e74c3c;">
+               <children>
+                  <ImageView fx:id="deleteButton" fitHeight="25.0" fitWidth="25.0" layoutX="351.0" layoutY="367.0" onMouseClicked="#deleteButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/delete.png" />
+                     </image>
+                  </ImageView>
+                  <TextArea fx:id="textArea" editable="false" layoutX="13.0" layoutY="14.0" onMouseClicked="#handleButtonAction" prefHeight="341.0" prefWidth="441.0" promptText="Explains . . ." wrapText="true" />
+                  <ImageView fx:id="speakButton" fitHeight="25.0" fitWidth="25.0" layoutX="417.0" layoutY="23.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/speak.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="scrollButton" fitHeight="25.0" fitWidth="25.0" layoutX="390.0" layoutY="367.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/scroll_up.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="auther" layoutX="14.0" layoutY="362.0" text="\@by Liscli - Huyen">
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="minimize1" fitHeight="25.0" fitWidth="25.0" layoutX="424.0" layoutY="376.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/sub.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children></AnchorPane>
+      <AnchorPane fx:id="about" layoutY="63.0" prefHeight="40.0" prefWidth="467.0" style="-fx-background-color: #e74c3c;">
+         <children>
+            <Label fx:id="auther1" layoutX="12.0" layoutY="12.0" text="\@Dictionary by Liscli - Huyen">
+               <font>
+                  <Font name="Century Gothic" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="helpButton" fitHeight="25.0" fitWidth="25.0" layoutX="426.0" layoutY="6.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/exit.png" />
+                  <Image url="@icons/help.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="addButton" fitHeight="25.0" fitWidth="25.0" layoutX="426.0" layoutY="15.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="minimize" fitHeight="25.0" fitWidth="25.0" layoutX="385.0" layoutY="15.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/add.png" />
+                  <Image url="@icons/sub.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="defffinition" layoutY="64.0" prefHeight="385.0" prefWidth="466.0" style="-fx-background-color: #e74c3c;">
-         <children>
-            <TextArea fx:id="textArea" layoutX="13.0" layoutY="44.0" prefHeight="329.0" prefWidth="441.0">
-               <contextMenu>
-                  <ContextMenu>
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                    </items>
-                  </ContextMenu>
-               </contextMenu></TextArea>
-            <ImageView fx:id="speakButton" fitHeight="25.0" fitWidth="25.0" layoutX="19.0" layoutY="8.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/speak.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="editButton" fitHeight="25.0" fitWidth="25.0" layoutX="385.0" layoutY="8.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/edit.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="deleteButton" fitHeight="25.0" fitWidth="25.0" layoutX="424.0" layoutY="6.0" onMouseClicked="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@icons/delete.png" />
-               </image>
-            </ImageView>
-         </children></AnchorPane>
    </children>
 </AnchorPane>

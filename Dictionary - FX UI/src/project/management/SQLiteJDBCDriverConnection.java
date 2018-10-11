@@ -50,7 +50,7 @@ public class SQLiteJDBCDriverConnection {
     }
     public List<Word> getResult(Connection connection,String sQuery){
         List<Word> words = new LinkedList<>();
-        String sCon = "select idx,word,detail from tbl_edict where word like ? limit 10";
+        String sCon = "select idx,word,detail from tbl_edict where word like ? order by word asc limit 10";
         
         try{
             PreparedStatement stmt  = connection.prepareStatement(sCon);
@@ -68,10 +68,49 @@ public class SQLiteJDBCDriverConnection {
         }
     }
     
-    public void insertIntoDatabase(){}
-    public void updateInDatabase(){}
-    public void deleteFromDatabase(){}
-    
+    public void insertIntoDatabase(Connection connection,Word word){
+        String sql = "INSERT INTO tbl_edict(word,detail) VALUES(?,?)";
+ 
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, word.getTarget());
+            pstmt.setString(2, word.getExplain());
+            pstmt.executeUpdate();
+            System.out.println("insert successfull!!");
+        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+        }
+    }
+    public void updateInDatabase(Connection connection,Word word){        
+        String sql = "UPDATE tbl_edict SET word = ? , "
+                + "detail = ? "
+                + "WHERE idx = ?";
+ 
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+ 
+            // set the corresponding param
+            pstmt.setString(1, word.getTarget());
+            pstmt.setString(2, word.getExplain());
+            pstmt.setInt(3, word.getId());
+            // update 
+            pstmt.executeUpdate();
+//            System.out.println("update successfull!!");
+        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+        }
+    }
+    public void deleteFromDatabase(Connection connection,int id){        
+        String sql = "DELETE FROM tbl_edict WHERE idx = ?";
+//        System.out.println(id);
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // set the corresponding param
+            pstmt.setInt(1, id);
+            // execute the delete statement
+            pstmt.executeUpdate();
+//            System.out.println("delete success!");
+        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+        }
+    }
     public void CloseConnection(){
         try {
                 if (conn != null) {

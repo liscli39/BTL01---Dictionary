@@ -75,7 +75,7 @@ public class SQLiteJDBCDriverConnection {
             pstmt.setString(1, word.getTarget());
             pstmt.setString(2, word.getExplain());
             pstmt.executeUpdate();
-            System.out.println("insert successfull!!");
+//            System.out.println("insert successfull!!");
         } catch (SQLException e) {
 //            System.out.println(e.getMessage());
         }

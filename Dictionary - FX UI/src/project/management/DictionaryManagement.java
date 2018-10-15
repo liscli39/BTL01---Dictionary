@@ -5,10 +5,8 @@
  */
 package project.management;
 
-import java.io.*;
 import project.Entity.Dictionary;
 import project.Entity.Word;
-import java.sql.ResultSet;
 
 /**
  *

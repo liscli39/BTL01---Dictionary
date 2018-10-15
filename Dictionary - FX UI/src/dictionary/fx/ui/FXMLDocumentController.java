@@ -7,6 +7,12 @@ package dictionary.fx.ui;
 
 import java.net.URL;
 import java.util.*;
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
@@ -14,37 +20,40 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
+import javafx.stage.Stage;
+
+import javax.swing.JOptionPane;
+
 import project.Entity.Word;
 import project.management.DictionaryManagement;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javax.swing.JFrame;
 
+import tts.TextToSpeech;
 /**
  *
  * @author Liscli
  */
 public class FXMLDocumentController implements Initializable {
     @FXML
+    private ProgressIndicator progress;
+    @FXML
     private Label auther,idLabel;
     @FXML
-    private AnchorPane definition,editPane,about,anchorPane;
+    private AnchorPane definition,editPane,anchorPane;
     @FXML
     private TextField searchBox,textField_;
     @FXML
-    private ImageView exitButton,addButton,editButton,deleteButton,speakButton,
-            scrollButton,cancelButton,saveButton,minimize,minimize1;
+    private ImageView exitButton,addButton,editButton,
+           cancelButton,saveButton,minimize,minimize1;
     @FXML
     private TextArea textArea,textArea_;
     @FXML
-    protected ContextMenu contextMenu;
+    private ContextMenu contextMenu;
     @FXML
     private void handleButtonAction(MouseEvent event) {
         if(event.getTarget() == exitButton){
             System.exit(1); 
         }else if(event.getTarget() == addButton){
-                about.setVisible(false);
                 definition.setVisible(true);
                 searchBox.setText("");
                 searchBox.setEditable(false);
@@ -64,22 +73,18 @@ public class FXMLDocumentController implements Initializable {
                 textArea_.setText(textArea.getText());
                 textField_.requestFocus();
             }
-        }else if(event.getTarget() == speakButton){
-            speak();
         }else if(event.getTarget() == cancelButton){
             auther.toFront();
             editPane.toBack();
             textField_.setText("");
             textArea_.setText("");
             definition.setVisible(false);
-            about.setVisible(true);
             searchBox.setEditable(true);
         }else if(event.getTarget() == saveButton){
             Word w;
             if(idLabel.getText().equals("-1")){
                 addNewWord();
             }else{
-//                System.out.println("edit");
                 editWord();
             }
             auther.toFront();
@@ -87,15 +92,8 @@ public class FXMLDocumentController implements Initializable {
             textField_.setText("");
             textArea_.setText("");
             searchBox.setEditable(true);
-        }else if(event.getTarget() == scrollButton){
-            searchBox.setText("");
-            exitButton.requestFocus();
-            definition.setVisible(false);
-            about.setVisible(true);
         }else if(event.getTarget() == minimize || event.getTarget() == minimize1){
             minimizeWindow();
-        }else if(event.getTarget() == searchBox){
-            searchBox.selectAll();
         }
         
     }
@@ -103,37 +101,69 @@ public class FXMLDocumentController implements Initializable {
     private void deleteButtonAction(MouseEvent event){
         deleteWord();
     }
-//    @FXML
-//    private void aboutButtonAction(MouseEvent event){
-//        javax.swing.JFrame about = new javax.swing.JFrame("Dictionary");
-//        about.setSize(100, 100);
-//        about.setResizable(false);
-//        about.show();
-//        
-//    }
-//    
+    @FXML
+    private void aboutButtonAction(MouseEvent event){
+        String aboutString = "Dictionary\n"
+        + "Auther: Liscli and Ngoc Huyen\n"
+        + "GitHub: https://github.com/liscli39\n"
+        + "Icon: https://icons8.com/ \n"
+        + "Text to speech : by GOXR3PLUS (with MarryTTS library) \n"
+        + "https://github.com/goxr3plus\n"
+        + "E.V Database: lingoes.net \n"
+        + "DBMS: sqlite";        
+        JOptionPane.showMessageDialog(null, aboutString,"About",1);
+    }
+    @FXML
+    private void speakButtonAction(MouseEvent event){
+        speak();
+    }
+    @FXML
+    private void searchBoxMouseClickedAction(MouseEvent event){
+        idLabel.setText("-1");
+        textArea.clear();
+        searchBox.selectAll();
+        progress.setVisible(false);
+    }
+    @FXML
+    private void copyButtonAction(MouseEvent event){
+        StringSelection stringSelection = new StringSelection(textArea.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+    @FXML
+    private void updownButtonAction(MouseEvent event){
+        if(definition.isVisible()){
+            exitButton.requestFocus();
+            definition.setVisible(false);
+        }else{
+            exitButton.requestFocus();
+            definition.setVisible(true);
+        }
+    }
     private void search(String newValue){
-        if(newValue.equals("")) return;
+        if(newValue.equals("")) {
+            progress.setVisible(false);
+            return;
+        }
+        progress.setVisible(false);
         currentList.clear();
         management.getListWordsWithQuery(newValue);
-        List<Word> words = management.getDictionary().getAllWords();
         
         contextMenu.hide();
         contextMenu.getItems().clear();
         Integer ind = 0; 
-        
-        for (Word var : words){
+        if(management.getDictionary().getAllWords().isEmpty()) {    
+            progress.setVisible(true);
+            return;
+        }
+        for (Word var : management.getDictionary().getAllWords()){
             MenuItem m = new MenuItem(var.getTarget());
             m.setId(ind.toString());
             ind++;
-            m.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    int id = Integer.parseInt(m.getId());
-                    definition.setVisible(true);
-                    about.setVisible(false);
-                    setExplain(id);
-                }
+            m.setOnAction((ActionEvent event) -> {
+                definition.setVisible(true);
+//                about.setVisible(false);
+                setExplain(new Integer(m.getId()));
             });
             contextMenu.getItems().add(m);
             currentList.add(var);
@@ -165,19 +195,19 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     private void editWord(){
-        if(!textField_.getText().equals("")){
+        if(!textField_.getText().equals("")&& !idLabel.getText().equals("-1") ){
             textArea.setText(textArea_.getText());
             //
             int id = Integer.parseInt(idLabel.getText());
             String explain = textArea_.getText().replaceAll("\n", ";");
             String target = textField_.getText();
             Word w = new Word(id,target,explain);
-            management.Edit(w);
-            
+            management.Edit(w); 
         }
     }
     private void deleteWord(){
-        if (!(idLabel.getText().equals("-1") || idLabel.getText().equals("id"))){
+        if (!(idLabel.getText().equals("-1") || idLabel.getText().equals("id"))
+                && !searchBox.getText().equals("")){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Word");
             alert.setHeaderText("Are you sure you want to delete this word?");
@@ -200,23 +230,22 @@ public class FXMLDocumentController implements Initializable {
     }
     private void minimizeWindow(){
         Stage stage = (Stage)anchorPane.getScene().getWindow();
-        
         stage.setIconified(true);
     }
     private void speak(){
-        TextToSpeech tts = new TextToSpeech();      
-        tts.speak(searchBox.getText(), 1.0f, false, false);
+        tts.speak(searchBox.getText(), 1.0f, true, false);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         management  = new DictionaryManagement();    
         currentList = new LinkedList<>();
         searchBox.textProperty().addListener((observable, oldValue, newValue) -> 
         {
             search(newValue);
         });
+        tts = new TextToSpeech();      
     }                                                        
     private DictionaryManagement management;    
     private List<Word> currentList;
+    private TextToSpeech tts;
 }

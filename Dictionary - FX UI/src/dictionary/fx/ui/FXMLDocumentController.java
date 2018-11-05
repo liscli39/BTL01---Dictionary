@@ -9,9 +9,6 @@ import java.net.URL;
 import java.util.*;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
